@@ -86,7 +86,7 @@ class InfoContainer extends StatelessWidget {
         ),
       ),
       child: const Text(
-        '안녕! 나는 실리콘밸리 gpt야!\n취업에 대한 걱정이 있는 것 같네?\n걱정하지마 내가 다 봐줄게!\n일단 아래 정보를 다 작성해줄래?',
+        '안녕! 나는 취업운을 알려주는 gpt야!\n취업에 대한 걱정이 있는 것 같네?\n걱정하지마 내가 다 봐줄게!\n일단 아래 정보를 다 작성해줄래?',
         style: TextStyle(color: Colors.white, fontSize: 16),
       ),
     );
@@ -203,7 +203,10 @@ class UserGenderSelection extends StatelessWidget {
                     ),
                   ),
                   onPressed: () {},
-                  child: const Text('남성'),
+                  child: const Text(
+                    '남성',
+                    style: TextStyle(fontSize: 16),
+                  ),
                 ),
               ),
               SizedBox(
@@ -218,7 +221,10 @@ class UserGenderSelection extends StatelessWidget {
                     ),
                   ),
                   onPressed: () {},
-                  child: const Text('여성'),
+                  child: const Text(
+                    '여성',
+                    style: TextStyle(fontSize: 16),
+                  ),
                 ),
               )
             ],
@@ -240,7 +246,7 @@ class SubmitButton extends StatelessWidget {
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
           backgroundColor: primary,
-          padding: const EdgeInsets.all(17),
+          padding: const EdgeInsets.all(20),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),
