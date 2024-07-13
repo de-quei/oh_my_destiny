@@ -20,126 +20,115 @@ class _InputUserInfoScreenState extends State<InputUserInfoScreen> {
         ),
         backgroundColor: primary,
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: SingleChildScrollView(
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 25, vertical: 25),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 25),
+          child: Column(
+            children: [
+              _buildGPTProfile(context), // gpt 프로필 빌드
+              const SizedBox(height: 15),
+              _buildInfoContainer(context), // 설명 빌드
+              const SizedBox(height: 30),
+              Container(
                 child: Column(
                   children: [
-                    _buildGPTProfile(context), // gpt 프로필 빌드
-                    const SizedBox(height: 15),
-                    _buildInfoContainer(context), // 설명 빌드
-                    const SizedBox(height: 30),
-                    Container(
-                      child: Column(
-                        children: [
-                          const Text(
-                            '이름',
-                            style: TextStyle(fontSize: 17),
+                    const Text(
+                      '이름',
+                      style: TextStyle(fontSize: 17),
+                    ),
+                    const SizedBox(height: 10),
+                    TextField(
+                      decoration: InputDecoration(
+                        hintText: '김미림',
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: stroke,
                           ),
-                          const SizedBox(height: 10),
-                          TextField(
-                            decoration: InputDecoration(
-                              hintText: '김미림',
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                  color: stroke,
-                                ),
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                  color: primary,
-                                ),
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                            ),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: primary,
                           ),
-                        ],
+                          borderRadius: BorderRadius.circular(10),
+                        ),
                       ),
                     ),
-                    const SizedBox(height: 30),
-                    Container(
-                      child: Column(
-                        children: [
-                          const Text(
-                            '성별',
-                            style: TextStyle(fontSize: 17),
-                          ),
-                          const SizedBox(height: 10),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              SizedBox(
-                                width: MediaQuery.of(context).size.width / 2.3,
-                                child: OutlinedButton(
-                                  style: OutlinedButton.styleFrom(
-                                    padding: const EdgeInsets.all(18),
-                                    foregroundColor: secondary,
-                                    side: BorderSide(color: stroke),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                  ),
-                                  onPressed: () {},
-                                  child: const Text('남성'),
-                                ),
-                              ),
-                              SizedBox(
-                                width: MediaQuery.of(context).size.width / 2.3,
-                                child: OutlinedButton(
-                                  style: OutlinedButton.styleFrom(
-                                    padding: const EdgeInsets.all(18),
-                                    foregroundColor: secondary,
-                                    side: BorderSide(color: stroke),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                  ),
-                                  onPressed: () {},
-                                  child: const Text('여성'),
-                                ),
-                              )
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 15),
-                    _buildDescription(context), // 개인정보 수집 용도 빌드
                   ],
                 ),
               ),
-            ),
-          ),
-          // TODO: Spacer 쓰고싶은딩 ㅠ
-          // Elevated Button
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Container(
-              width: MediaQuery.of(context).size.width,
-              padding: const EdgeInsets.all(20),
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: primary,
-                  padding: const EdgeInsets.all(17),
-                  // 기본 적용된 Radius를 사용자 지정으로 변환
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-                onPressed: () {},
-                child: const Text(
-                  '사주보기',
-                  style: TextStyle(color: Colors.white, fontSize: 17),
+              const SizedBox(height: 20),
+              Container(
+                child: Column(
+                  children: [
+                    const Text(
+                      '성별',
+                      style: TextStyle(fontSize: 17),
+                    ),
+                    const SizedBox(height: 10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width / 2.3,
+                          child: OutlinedButton(
+                            style: OutlinedButton.styleFrom(
+                              padding: const EdgeInsets.all(20),
+                              foregroundColor: secondary,
+                              side: BorderSide(color: stroke),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                            ),
+                            onPressed: () {},
+                            child: const Text('남성'),
+                          ),
+                        ),
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width / 2.3,
+                          child: OutlinedButton(
+                            style: OutlinedButton.styleFrom(
+                              padding: const EdgeInsets.all(20),
+                              foregroundColor: secondary,
+                              side: BorderSide(color: stroke),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                            ),
+                            onPressed: () {},
+                            child: const Text('여성'),
+                          ),
+                        )
+                      ],
+                    ),
+                  ],
                 ),
               ),
-            ),
+              const SizedBox(height: 20),
+              _buildDescription(context), // 개인정보 수집 용도 빌드
+              const SizedBox(height: 20),
+              SizedBox(
+                // width를 지정하기 위한 SizedBox
+                width: MediaQuery.of(context).size.width,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: primary,
+                    padding: const EdgeInsets.all(17),
+                    // 기본 적용된 Radius를 사용자 지정으로 변환
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                  onPressed: () {},
+                  child: const Text(
+                    '사주보기',
+                    style: TextStyle(color: Colors.white, fontSize: 17),
+                  ),
+                ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
