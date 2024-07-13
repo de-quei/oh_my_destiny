@@ -32,6 +32,82 @@ class _InputUserInfoScreenState extends State<InputUserInfoScreen> {
                     _buildGPTProfile(context), // gpt 프로필 빌드
                     const SizedBox(height: 15),
                     _buildInfoContainer(context), // 설명 빌드
+                    const SizedBox(height: 30),
+                    Container(
+                      child: Column(
+                        children: [
+                          const Text(
+                            '이름',
+                            style: TextStyle(fontSize: 17),
+                          ),
+                          const SizedBox(height: 10),
+                          TextField(
+                            decoration: InputDecoration(
+                              hintText: '김미림',
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: stroke,
+                                ),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: primary,
+                                ),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 30),
+                    Container(
+                      child: Column(
+                        children: [
+                          const Text(
+                            '성별',
+                            style: TextStyle(fontSize: 17),
+                          ),
+                          const SizedBox(height: 10),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width / 2.3,
+                                child: OutlinedButton(
+                                  style: OutlinedButton.styleFrom(
+                                    padding: const EdgeInsets.all(18),
+                                    foregroundColor: secondary,
+                                    side: BorderSide(color: stroke),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                  ),
+                                  onPressed: () {},
+                                  child: const Text('남성'),
+                                ),
+                              ),
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width / 2.3,
+                                child: OutlinedButton(
+                                  style: OutlinedButton.styleFrom(
+                                    padding: const EdgeInsets.all(18),
+                                    foregroundColor: secondary,
+                                    side: BorderSide(color: stroke),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                  ),
+                                  onPressed: () {},
+                                  child: const Text('여성'),
+                                ),
+                              )
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
                     const SizedBox(height: 15),
                     _buildDescription(context), // 개인정보 수집 용도 빌드
                   ],
@@ -40,6 +116,7 @@ class _InputUserInfoScreenState extends State<InputUserInfoScreen> {
             ),
           ),
           // TODO: Spacer 쓰고싶은딩 ㅠ
+          // Elevated Button
           Align(
             alignment: Alignment.bottomCenter,
             child: Container(
