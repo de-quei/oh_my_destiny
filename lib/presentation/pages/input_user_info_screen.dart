@@ -20,19 +20,49 @@ class _InputUserInfoScreenState extends State<InputUserInfoScreen> {
         ),
         backgroundColor: primary,
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 25),
-          child: Column(
-            children: [
-              _buildGPTProfile(context), // gpt 프로필 빌드
-              const SizedBox(height: 15),
-              _buildInfoContainer(context), // 설명 빌드
-              const SizedBox(height: 15),
-              _buildDescription(context) // 개인정보 수집 용도 빌드
-            ],
+      body: Column(
+        children: [
+          Expanded(
+            child: SingleChildScrollView(
+              child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 25, vertical: 25),
+                child: Column(
+                  children: [
+                    _buildGPTProfile(context), // gpt 프로필 빌드
+                    const SizedBox(height: 15),
+                    _buildInfoContainer(context), // 설명 빌드
+                    const SizedBox(height: 15),
+                    _buildDescription(context), // 개인정보 수집 용도 빌드
+                  ],
+                ),
+              ),
+            ),
           ),
-        ),
+          // TODO: Spacer 쓰고싶은딩 ㅠ
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Container(
+              width: MediaQuery.of(context).size.width,
+              padding: const EdgeInsets.all(20),
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: primary,
+                  padding: const EdgeInsets.all(17),
+                  // 기본 적용된 Radius를 사용자 지정으로 변환
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+                onPressed: () {},
+                child: const Text(
+                  '사주보기',
+                  style: TextStyle(color: Colors.white, fontSize: 17),
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
