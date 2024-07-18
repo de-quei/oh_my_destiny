@@ -42,8 +42,6 @@ class _InputUserInfoScreenState extends State<InputUserInfoScreen> {
             children: [
               const SizedBox(height: 15),
               gptProfile(context),
-              const SizedBox(height: 20),
-              infoContainer(context),
               const SizedBox(height: 30),
               UserNameInput(controller: _usernameController),
               const SizedBox(height: 20),
@@ -77,28 +75,25 @@ Widget gptProfile(BuildContext context) {
         Text(
           '#취업운 #성공운',
           style: TextStyle(color: secondary),
-        )
+        ),
+        const SizedBox(height: 20),
+        Container(
+          width: MediaQuery.of(context).size.width,
+          padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 20),
+          decoration: BoxDecoration(
+            color: primary,
+            borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(15),
+              topRight: Radius.circular(15),
+              bottomRight: Radius.circular(15),
+            ),
+          ),
+          child: const Text(
+            '안녕! 나는 취업운을 알려주는 gpt야!\n취업에 대한 걱정이 있는 것 같네?\n걱정하지마 내가 다 봐줄게!\n일단 아래 정보를 다 작성해줄래?',
+            style: TextStyle(color: Colors.white, fontSize: 16),
+          ),
+        ),
       ],
-    ),
-  );
-}
-
-// 안내
-Widget infoContainer(BuildContext context) {
-  return Container(
-    width: MediaQuery.of(context).size.width,
-    padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 20),
-    decoration: BoxDecoration(
-      color: primary,
-      borderRadius: const BorderRadius.only(
-        topLeft: Radius.circular(15),
-        topRight: Radius.circular(15),
-        bottomRight: Radius.circular(15),
-      ),
-    ),
-    child: const Text(
-      '안녕! 나는 취업운을 알려주는 gpt야!\n취업에 대한 걱정이 있는 것 같네?\n걱정하지마 내가 다 봐줄게!\n일단 아래 정보를 다 작성해줄래?',
-      style: TextStyle(color: Colors.white, fontSize: 16),
     ),
   );
 }
