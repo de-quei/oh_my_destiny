@@ -10,7 +10,9 @@ class InputUserInfoScreen extends StatefulWidget {
 
 class _InputUserInfoScreenState extends State<InputUserInfoScreen> {
   final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _birthdateController = TextEditingController();
   String? _selectedGender;
+  String? _selectedCalender;
 
   @override
   void dispose() {
@@ -21,6 +23,12 @@ class _InputUserInfoScreenState extends State<InputUserInfoScreen> {
   void _onGenderSelected(String gender) {
     setState(() {
       _selectedGender = gender;
+    });
+  }
+
+  void _onCalendarSelected(String calendar) {
+    setState(() {
+      _selectedCalender = calendar;
     });
   }
 
@@ -46,6 +54,8 @@ class _InputUserInfoScreenState extends State<InputUserInfoScreen> {
               UserInfoInput(
                 controller: _usernameController,
                 onGenderSelected: _onGenderSelected,
+                birthdateController: _birthdateController,
+                onCalenderSelected: _onCalendarSelected,
               ),
               const SizedBox(height: 20),
               description(context),
@@ -53,6 +63,8 @@ class _InputUserInfoScreenState extends State<InputUserInfoScreen> {
               SubmitButton(
                 usernameController: _usernameController,
                 selectedGender: _selectedGender,
+                selectedCalendar: _selectedCalender,
+                birthdateController: _birthdateController,
               ),
             ],
           ),
@@ -103,11 +115,15 @@ Widget gptProfile(BuildContext context) {
 class UserInfoInput extends StatefulWidget {
   final TextEditingController controller; // 사용자 이름 컨트롤러
   final ValueChanged<String> onGenderSelected;
+  final TextEditingController birthdateController; // 사용자 생년월일 컨트롤러
+  final ValueChanged<String> onCalenderSelected;
 
   const UserInfoInput({
     super.key,
     required this.controller,
     required this.onGenderSelected,
+    required this.birthdateController,
+    required this.onCalenderSelected,
   });
 
   @override
@@ -116,6 +132,7 @@ class UserInfoInput extends StatefulWidget {
 
 class _UserInfoInputState extends State<UserInfoInput> {
   String? selectedGender; // 사용자 성별 선택
+  String? selectedCalender; // 사용자 생년월일 선택
 
   @override
   Widget build(BuildContext context) {
@@ -159,6 +176,71 @@ class _UserInfoInputState extends State<UserInfoInput> {
             children: [
               genderButton(context, '남성'),
               genderButton(context, '여성'),
+            ],
+          ),
+          const SizedBox(height: 20),
+          // 생년월일 입력
+          const Text(
+            '생년월일',
+            style: TextStyle(fontSize: 17),
+          ),
+          const SizedBox(height: 10),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              SizedBox(
+                width: MediaQuery.of(context).size.width / 3.2,
+                child: DropdownButtonFormField<String>(
+                  decoration: InputDecoration(
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: stroke,
+                      ),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: primary,
+                      ),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                  items: const [
+                    DropdownMenuItem(value: '양력', child: Text('양력')),
+                    DropdownMenuItem(value: '음력', child: Text('음력')),
+                    DropdownMenuItem(value: '음력(윤달)', child: Text('음력(윤달)'))
+                  ],
+                  onChanged: (value) {
+                    setState(() {
+                      selectedCalender = value;
+                    });
+                    widget.onCalenderSelected(value!);
+                  },
+                  hint: const Text('양력'),
+                  value: selectedCalender,
+                ),
+              ),
+              SizedBox(
+                width: MediaQuery.of(context).size.width / 1.8,
+                child: TextField(
+                  controller: widget.birthdateController,
+                  decoration: InputDecoration(
+                    hintText: 'YYYY-MM-DD',
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: stroke,
+                      ),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: primary,
+                      ),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                ),
+              ),
             ],
           ),
         ],
@@ -235,12 +317,16 @@ Widget description(BuildContext context) {
 // 제출 버튼
 class SubmitButton extends StatelessWidget {
   final TextEditingController usernameController;
+  final TextEditingController birthdateController;
   final String? selectedGender;
+  final String? selectedCalendar;
 
   const SubmitButton({
     super.key,
     required this.usernameController,
     this.selectedGender,
+    required this.birthdateController,
+    this.selectedCalendar,
   });
 
   @override
@@ -257,9 +343,13 @@ class SubmitButton extends StatelessWidget {
         ),
         onPressed: () {
           final name = usernameController.text;
+          final birthdate = birthdateController.text;
           final gender = selectedGender;
+          final calendar = selectedCalendar;
           print('Name: $name');
           print('Gender: $gender');
+          print('Birthdate: $birthdate');
+          print('Calendar: $calendar');
         },
         child: const Text(
           '사주보기',
