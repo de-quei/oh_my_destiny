@@ -43,9 +43,10 @@ class _InputUserInfoScreenState extends State<InputUserInfoScreen> {
               const SizedBox(height: 15),
               gptProfile(context),
               const SizedBox(height: 30),
-              UserNameInput(controller: _usernameController),
-              const SizedBox(height: 20),
-              UserGenderSelection(onGenderSelected: _onGenderSelected),
+              UserInfoInput(
+                controller: _usernameController,
+                onGenderSelected: _onGenderSelected,
+              ),
               const SizedBox(height: 20),
               description(context),
               const SizedBox(height: 20),
@@ -98,11 +99,23 @@ Widget gptProfile(BuildContext context) {
   );
 }
 
-// 이름 입력 필드
-class UserNameInput extends StatelessWidget {
-  final TextEditingController controller;
+// 유저정보 입력
+class UserInfoInput extends StatefulWidget {
+  final TextEditingController controller; // 사용자 이름 컨트롤러
+  final ValueChanged<String> onGenderSelected;
 
-  const UserNameInput({super.key, required this.controller});
+  const UserInfoInput({
+    super.key,
+    required this.controller,
+    required this.onGenderSelected,
+  });
+
+  @override
+  State<UserInfoInput> createState() => _UserInfoInputState();
+}
+
+class _UserInfoInputState extends State<UserInfoInput> {
+  String? selectedGender; // 사용자 성별 선택
 
   @override
   Widget build(BuildContext context) {
@@ -110,13 +123,14 @@ class UserNameInput extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // 이름 입력
           const Text(
             '이름',
             style: TextStyle(fontSize: 17),
           ),
           const SizedBox(height: 10),
           TextField(
-            controller: controller,
+            controller: widget.controller,
             decoration: InputDecoration(
               hintText: '김미림',
               enabledBorder: OutlineInputBorder(
@@ -133,31 +147,8 @@ class UserNameInput extends StatelessWidget {
               ),
             ),
           ),
-        ],
-      ),
-    );
-  }
-}
-
-// 성별 선택 버튼
-class UserGenderSelection extends StatefulWidget {
-  final ValueChanged<String> onGenderSelected;
-
-  const UserGenderSelection({super.key, required this.onGenderSelected});
-
-  @override
-  State<UserGenderSelection> createState() => _UserGenderSelectionState();
-}
-
-class _UserGenderSelectionState extends State<UserGenderSelection> {
-  String? selectedGender;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
+          const SizedBox(height: 20),
+          // 성별 선택
           const Text(
             '성별',
             style: TextStyle(fontSize: 17),
@@ -175,6 +166,7 @@ class _UserGenderSelectionState extends State<UserGenderSelection> {
     );
   }
 
+  // 성별 선택 버튼
   Widget genderButton(BuildContext context, String gender) {
     bool isSelected = selectedGender == gender;
     return SizedBox(
