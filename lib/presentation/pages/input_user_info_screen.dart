@@ -9,32 +9,34 @@ class InputUserInfoScreen extends StatefulWidget {
 }
 
 class _InputUserInfoScreenState extends State<InputUserInfoScreen> {
+  final TextEditingController _usernameController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
           '취업할 수 있을까..?',
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(color: Colors.white, fontSize: 17),
         ),
+        centerTitle: true, // 안드로이드에선 centerTitle을 설정해주어야 함
         backgroundColor: primary,
       ),
-      body: const SingleChildScrollView(
+      body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 25, vertical: 25),
+          padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 25),
           child: Column(
             children: [
-              GPTProfile(), // gpt 프로필 빌드
-              SizedBox(height: 15),
-              InfoContainer(), // 설명 빌드
-              SizedBox(height: 30),
-              UserNameInput(),
-              SizedBox(height: 20),
-              UserGenderSelection(),
-              SizedBox(height: 20),
-              Description(), // 개인정보 수집 용도 빌드
-              SizedBox(height: 20),
-              SubmitButton(),
+              const SizedBox(height: 15),
+              const GPTProfile(), // gpt 프로필 빌드
+              const SizedBox(height: 15),
+              const InfoContainer(), // 설명 빌드
+              const SizedBox(height: 30),
+              UserNameInput(controller: _usernameController), // 이름 입력
+              const SizedBox(height: 20),
+              const Description(), // 개인정보 수집 용도 빌드
+              const SizedBox(height: 20),
+              SubmitButton(usernameController: _usernameController),
             ],
           ),
         ),
@@ -137,7 +139,9 @@ class Description extends StatelessWidget {
 
 // 이름 입력 필드
 class UserNameInput extends StatelessWidget {
-  const UserNameInput({super.key});
+  final TextEditingController controller;
+
+  const UserNameInput({super.key, required this.controller});
 
   @override
   Widget build(BuildContext context) {
@@ -151,6 +155,7 @@ class UserNameInput extends StatelessWidget {
           ),
           const SizedBox(height: 10),
           TextField(
+            controller: controller,
             decoration: InputDecoration(
               hintText: '김미림',
               enabledBorder: OutlineInputBorder(
@@ -173,71 +178,11 @@ class UserNameInput extends StatelessWidget {
   }
 }
 
-// 성별 선택
-class UserGenderSelection extends StatelessWidget {
-  const UserGenderSelection({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text(
-            '성별',
-            style: TextStyle(fontSize: 17),
-          ),
-          const SizedBox(height: 10),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              SizedBox(
-                width: MediaQuery.of(context).size.width / 2.3,
-                child: OutlinedButton(
-                  style: OutlinedButton.styleFrom(
-                    padding: const EdgeInsets.all(20),
-                    foregroundColor: secondary,
-                    side: BorderSide(color: stroke),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                  onPressed: () {},
-                  child: const Text(
-                    '남성',
-                    style: TextStyle(fontSize: 16),
-                  ),
-                ),
-              ),
-              SizedBox(
-                width: MediaQuery.of(context).size.width / 2.3,
-                child: OutlinedButton(
-                  style: OutlinedButton.styleFrom(
-                    padding: const EdgeInsets.all(20),
-                    foregroundColor: secondary,
-                    side: BorderSide(color: stroke),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                  onPressed: () {},
-                  child: const Text(
-                    '여성',
-                    style: TextStyle(fontSize: 16),
-                  ),
-                ),
-              )
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-}
-
 // 제출 버튼
 class SubmitButton extends StatelessWidget {
-  const SubmitButton({super.key});
+  final TextEditingController usernameController;
+
+  const SubmitButton({super.key, required this.usernameController});
 
   @override
   Widget build(BuildContext context) {
@@ -251,7 +196,10 @@ class SubmitButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(10),
           ),
         ),
-        onPressed: () {},
+        onPressed: () {
+          final name = usernameController.text;
+          print('Name: $name');
+        },
         child: const Text(
           '사주보기',
           style: TextStyle(color: Colors.white, fontSize: 17),
