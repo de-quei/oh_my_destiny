@@ -136,115 +136,113 @@ class _UserInfoInputState extends State<UserInfoInput> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // 이름 입력
-          const Text(
-            '이름',
-            style: TextStyle(fontSize: 17),
-          ),
-          const SizedBox(height: 10),
-          TextField(
-            controller: widget.controller,
-            decoration: InputDecoration(
-              hintText: '김미림',
-              enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(
-                  color: stroke,
-                ),
-                borderRadius: BorderRadius.circular(10),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // 이름 입력
+        const Text(
+          '이름',
+          style: TextStyle(fontSize: 17),
+        ),
+        const SizedBox(height: 10),
+        TextField(
+          controller: widget.controller,
+          decoration: InputDecoration(
+            hintText: '김미림',
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(
+                color: stroke,
               ),
-              focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(
-                  color: primary,
-                ),
-                borderRadius: BorderRadius.circular(10),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(
+                color: primary,
               ),
+              borderRadius: BorderRadius.circular(10),
             ),
           ),
-          const SizedBox(height: 20),
-          // 성별 선택
-          const Text(
-            '성별',
-            style: TextStyle(fontSize: 17),
-          ),
-          const SizedBox(height: 10),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              genderButton(context, '남성'),
-              genderButton(context, '여성'),
-            ],
-          ),
-          const SizedBox(height: 20),
-          // 생년월일 입력
-          const Text(
-            '생년월일',
-            style: TextStyle(fontSize: 17),
-          ),
-          const SizedBox(height: 10),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              SizedBox(
-                width: MediaQuery.of(context).size.width / 3.2,
-                child: DropdownButtonFormField<String>(
-                  decoration: InputDecoration(
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: stroke,
-                      ),
-                      borderRadius: BorderRadius.circular(10),
+        ),
+        const SizedBox(height: 20),
+        // 성별 선택
+        const Text(
+          '성별',
+          style: TextStyle(fontSize: 17),
+        ),
+        const SizedBox(height: 10),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            genderButton(context, '남성'),
+            genderButton(context, '여성'),
+          ],
+        ),
+        const SizedBox(height: 20),
+        // 생년월일 입력
+        const Text(
+          '생년월일',
+          style: TextStyle(fontSize: 17),
+        ),
+        const SizedBox(height: 10),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            SizedBox(
+              width: MediaQuery.of(context).size.width / 3.2,
+              child: DropdownButtonFormField<String>(
+                decoration: InputDecoration(
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: stroke,
                     ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: primary,
-                      ),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
+                    borderRadius: BorderRadius.circular(10),
                   ),
-                  items: const [
-                    DropdownMenuItem(value: '양력', child: Text('양력')),
-                    DropdownMenuItem(value: '음력', child: Text('음력')),
-                    DropdownMenuItem(value: '음력(윤달)', child: Text('음력(윤달)'))
-                  ],
-                  onChanged: (value) {
-                    setState(() {
-                      selectedCalender = value;
-                    });
-                    widget.onCalenderSelected(value!);
-                  },
-                  hint: const Text('양력'),
-                  value: selectedCalender,
-                ),
-              ),
-              SizedBox(
-                width: MediaQuery.of(context).size.width / 1.8,
-                child: TextField(
-                  controller: widget.birthdateController,
-                  decoration: InputDecoration(
-                    hintText: 'YYYY-MM-DD',
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: stroke,
-                      ),
-                      borderRadius: BorderRadius.circular(10),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: primary,
                     ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: primary,
-                      ),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
+                    borderRadius: BorderRadius.circular(10),
                   ),
                 ),
+                items: const [
+                  DropdownMenuItem(value: '양력', child: Text('양력')),
+                  DropdownMenuItem(value: '음력', child: Text('음력')),
+                  DropdownMenuItem(value: '음력(윤달)', child: Text('음력(윤달)'))
+                ],
+                onChanged: (value) {
+                  setState(() {
+                    selectedCalender = value;
+                  });
+                  widget.onCalenderSelected(value!);
+                },
+                hint: const Text('양력'),
+                value: selectedCalender,
               ),
-            ],
-          ),
-        ],
-      ),
+            ),
+            SizedBox(
+              width: MediaQuery.of(context).size.width / 1.8,
+              child: TextField(
+                controller: widget.birthdateController,
+                decoration: InputDecoration(
+                  hintText: 'YYYY-MM-DD',
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: stroke,
+                    ),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: primary,
+                    ),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ],
     );
   }
 
