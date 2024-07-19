@@ -254,7 +254,7 @@ class _UserInfoInputState extends State<UserInfoInput> {
       child: OutlinedButton(
         style: OutlinedButton.styleFrom(
           padding: const EdgeInsets.all(20),
-          foregroundColor: secondary,
+          foregroundColor: isSelected ? Colors.black : secondary,
           side: BorderSide(color: isSelected ? primary : stroke),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
