@@ -20,12 +20,12 @@ class ApiService {
           {
             'role': 'system',
             'content':
-                'You are an assistant that provides career fortune-telling.'
+                'You are an assistant that provides career fortune-telling. We will provide you with our name, our gender, our birthdate so you should provide our career fortune.'
           },
           {
             'role': 'user',
             'content':
-                '이름: $name\n성별: $gender\n생년월일: $birthdate\n달력: $calendar\n\n취업운을 알고 싶습니다.'
+                '넌 지금부터 명리학자야\n사람의 정보를 보고 사주를 봐주면 돼\n취업운을 볼거야\n\n이름 : $name\n생년월일 : $birthdate\n달력 : $calendar\n성별 : $gender\n\n내 정보야\n취업운을 알고 싶어\n\n답변 마지막에는 행운을 빕니다! (네잎클로버 이모티콘)으로 마무리해줘'
           }
         ],
         'max_tokens': 4096,
