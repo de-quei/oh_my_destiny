@@ -1,7 +1,6 @@
-import 'dart:convert';
+// lib/presentation/pages/input_user_info_screen.dart
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:http/http.dart' as http;
+import '../../services/api_service.dart';
 import '../../app/config/app_color.dart';
 
 class InputUserInfoScreen extends StatefulWidget {
@@ -16,7 +15,9 @@ class _InputUserInfoScreenState extends State<InputUserInfoScreen> {
   final TextEditingController _birthdateController = TextEditingController();
   String? _selectedGender;
   String? _selectedCalendar;
-  String? _gptResponse; // Add a variable to store the GPT response
+  String? _gptResponse;
+
+  final ApiService _apiService = ApiService(); // ApiService 인스턴스 생성
 
   @override
   void dispose() {
@@ -43,7 +44,7 @@ class _InputUserInfoScreenState extends State<InputUserInfoScreen> {
     final gender = _selectedGender;
     final calendar = _selectedCalendar;
 
-    // 모든 정보가 입력되었는지 검사
+    // 입력 값이 비어있는지 검사
     if (name.isEmpty ||
         birthdate.isEmpty ||
         gender == null ||
@@ -54,46 +55,17 @@ class _InputUserInfoScreenState extends State<InputUserInfoScreen> {
       return;
     }
 
-    final apiKey = dotenv.env['OPENAI_API_KEY'];
-
-    final response = await http.post(
-      Uri.parse('https://api.openai.com/v1/chat/completions'),
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer $apiKey',
-      },
-      body: jsonEncode({
-        'model': 'gpt-3.5-turbo',
-        'messages': [
-          {
-            'role': 'system',
-            'content':
-                'You are an assistant that provides career fortune-telling.'
-          },
-          {
-            'role': 'user',
-            'content':
-                '이름: $name\n성별: $gender\n생년월일: $birthdate\n달력: $calendar\n\n취업운을 알고 싶습니다.'
-          }
-        ],
-        'max_tokens': 4096,
-      }),
-    );
-
-    if (response.statusCode == 200) {
-      final decodedBody = utf8.decode(response.bodyBytes);
-      final data = jsonDecode(decodedBody);
-      final messageContent = data['choices'][0]['message']['content'];
-      print('Message content: $messageContent'); // 메시지 내용 출력
+    // Response
+    try {
+      final response =
+          await _apiService.fetchGptResponse(name, birthdate, gender, calendar);
       setState(() {
-        _gptResponse = messageContent;
+        _gptResponse = response;
       });
-    } else {
-      print('Failed to call GPT API. Status code: ${response.statusCode}');
-      print('Response body: ${response.body}');
+    } catch (e) {
+      print(e);
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-            content: Text('GPT API 호출에 실패했습니다. 상태 코드: ${response.statusCode}')),
+        const SnackBar(content: Text('GPT API 호출에 실패했습니다.')),
       );
     }
   }
@@ -115,8 +87,9 @@ class _InputUserInfoScreenState extends State<InputUserInfoScreen> {
           child: Column(
             children: [
               const SizedBox(height: 15),
-              gptProfile(context),
+              gptProfile(context), // 소개말
               const SizedBox(height: 30),
+              // 사용자 정보 입력
               UserInfoInput(
                 controller: _usernameController,
                 onGenderSelected: _onGenderSelected,
@@ -124,15 +97,16 @@ class _InputUserInfoScreenState extends State<InputUserInfoScreen> {
                 onCalenderSelected: _onCalendarSelected,
               ),
               const SizedBox(height: 20),
-              description(context),
+              description(context), // 개인정보 수집 용도 설명
               const SizedBox(height: 20),
+              // 제출 버튼
               Align(
                 alignment: Alignment.bottomCenter,
                 child: SubmitButton(
-                  onSubmit:
-                      _submitUserInfo, // Pass the function to SubmitButton
+                  onSubmit: _submitUserInfo,
                 ),
               ),
+              // 답변 생성
               if (_gptResponse != null)
                 Padding(
                   padding: const EdgeInsets.only(top: 20),
