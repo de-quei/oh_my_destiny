@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/route_manager.dart';
+import 'package:oh_my_destiny/presentation/pages/gpt_response_screen.dart';
 import 'presentation/pages/input_user_info_screen.dart';
 
 Future<void> main() async {
@@ -18,6 +19,7 @@ class MainApp extends StatelessWidget {
       getPages: [
         GetPage(
             name: '/input_user_info', page: () => const InputUserInfoScreen()),
+        GetPage(name: '/gpt_response', page: () => const GptResponseScreen()),
       ],
       initialRoute: '/input_user_info',
     );

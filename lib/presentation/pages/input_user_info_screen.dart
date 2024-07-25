@@ -1,5 +1,6 @@
 // lib/presentation/pages/input_user_info_screen.dart
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import '../../services/api_service.dart';
 import '../../app/config/app_color.dart';
 
@@ -59,9 +60,8 @@ class _InputUserInfoScreenState extends State<InputUserInfoScreen> {
     try {
       final response =
           await _apiService.fetchGptResponse(name, birthdate, gender, calendar);
-      setState(() {
-        _gptResponse = response;
-      });
+      Get.toNamed('/gpt_response',
+          arguments: response); // Navigate with GPT response
     } catch (e) {
       print(e);
       ScaffoldMessenger.of(context).showSnackBar(
@@ -106,15 +106,6 @@ class _InputUserInfoScreenState extends State<InputUserInfoScreen> {
                   onSubmit: _submitUserInfo,
                 ),
               ),
-              // 답변 생성
-              if (_gptResponse != null)
-                Padding(
-                  padding: const EdgeInsets.only(top: 20),
-                  child: Text(
-                    _gptResponse!,
-                    style: const TextStyle(fontSize: 16, color: Colors.black),
-                  ),
-                ),
             ],
           ),
         ),
@@ -151,7 +142,7 @@ Widget gptProfile(BuildContext context) {
             ),
           ),
           child: const Text(
-            '안녕! 나는 취업운을 알려주는 gpt야!\n취업에 대한 걱정이 있는 것 같네?\n걱정하지마 내가 다 봐줄게!\n일단 아래 정보를 다 작성해줄래?',
+            '안녕하세요?\n저는 취업운을 알려주는 인공지능입니다.\n취업에 대한 걱정이 있으시군요...\n걱정하지 마세요! 제가 취업운을 봐드릴게요 😳\n먼저 아래 정보를 다 작성해주시겠어요?',
             style: TextStyle(color: Colors.white, fontSize: 16),
           ),
         ),
