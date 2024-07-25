@@ -1,4 +1,7 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:http/http.dart' as http;
 import '../../app/config/app_color.dart';
 
 class InputUserInfoScreen extends StatefulWidget {
@@ -12,11 +15,13 @@ class _InputUserInfoScreenState extends State<InputUserInfoScreen> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _birthdateController = TextEditingController();
   String? _selectedGender;
-  String? _selectedCalender;
+  String? _selectedCalendar;
+  String? _gptResponse; // Add a variable to store the GPT response
 
   @override
   void dispose() {
     _usernameController.dispose();
+    _birthdateController.dispose();
     super.dispose();
   }
 
@@ -28,8 +33,69 @@ class _InputUserInfoScreenState extends State<InputUserInfoScreen> {
 
   void _onCalendarSelected(String calendar) {
     setState(() {
-      _selectedCalender = calendar;
+      _selectedCalendar = calendar;
     });
+  }
+
+  Future<void> _submitUserInfo() async {
+    final name = _usernameController.text;
+    final birthdate = _birthdateController.text;
+    final gender = _selectedGender;
+    final calendar = _selectedCalendar;
+
+    // 모든 정보가 입력되었는지 검사
+    if (name.isEmpty ||
+        birthdate.isEmpty ||
+        gender == null ||
+        calendar == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('모든 정보를 입력해주세요.')),
+      );
+      return;
+    }
+
+    final apiKey = dotenv.env['OPENAI_API_KEY'];
+
+    final response = await http.post(
+      Uri.parse('https://api.openai.com/v1/chat/completions'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $apiKey',
+      },
+      body: jsonEncode({
+        'model': 'gpt-3.5-turbo',
+        'messages': [
+          {
+            'role': 'system',
+            'content':
+                'You are an assistant that provides career fortune-telling.'
+          },
+          {
+            'role': 'user',
+            'content':
+                '이름: $name\n성별: $gender\n생년월일: $birthdate\n달력: $calendar\n\n취업운을 알고 싶습니다.'
+          }
+        ],
+        'max_tokens': 4096,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      final decodedBody = utf8.decode(response.bodyBytes);
+      final data = jsonDecode(decodedBody);
+      final messageContent = data['choices'][0]['message']['content'];
+      print('Message content: $messageContent'); // 메시지 내용 출력
+      setState(() {
+        _gptResponse = messageContent;
+      });
+    } else {
+      print('Failed to call GPT API. Status code: ${response.statusCode}');
+      print('Response body: ${response.body}');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+            content: Text('GPT API 호출에 실패했습니다. 상태 코드: ${response.statusCode}')),
+      );
+    }
   }
 
   @override
@@ -60,12 +126,21 @@ class _InputUserInfoScreenState extends State<InputUserInfoScreen> {
               const SizedBox(height: 20),
               description(context),
               const SizedBox(height: 20),
-              SubmitButton(
-                usernameController: _usernameController,
-                selectedGender: _selectedGender,
-                selectedCalendar: _selectedCalender,
-                birthdateController: _birthdateController,
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: SubmitButton(
+                  onSubmit:
+                      _submitUserInfo, // Pass the function to SubmitButton
+                ),
               ),
+              if (_gptResponse != null)
+                Padding(
+                  padding: const EdgeInsets.only(top: 20),
+                  child: Text(
+                    _gptResponse!,
+                    style: const TextStyle(fontSize: 16, color: Colors.black),
+                  ),
+                ),
             ],
           ),
         ),
@@ -132,7 +207,7 @@ class UserInfoInput extends StatefulWidget {
 
 class _UserInfoInputState extends State<UserInfoInput> {
   String? selectedGender; // 사용자 성별 선택
-  String? selectedCalender; // 사용자 생년월일 선택
+  String? selectedCalendar; // 사용자 생년월일 선택
 
   @override
   Widget build(BuildContext context) {
@@ -211,12 +286,12 @@ class _UserInfoInputState extends State<UserInfoInput> {
                 ],
                 onChanged: (value) {
                   setState(() {
-                    selectedCalender = value;
+                    selectedCalendar = value;
                   });
                   widget.onCalenderSelected(value!);
                 },
                 hint: const Text('양력'),
-                value: selectedCalender,
+                value: selectedCalendar,
               ),
             ),
             SizedBox(
@@ -314,17 +389,11 @@ Widget description(BuildContext context) {
 
 // 제출 버튼
 class SubmitButton extends StatelessWidget {
-  final TextEditingController usernameController;
-  final TextEditingController birthdateController;
-  final String? selectedGender;
-  final String? selectedCalendar;
+  final VoidCallback onSubmit;
 
   const SubmitButton({
     super.key,
-    required this.usernameController,
-    this.selectedGender,
-    required this.birthdateController,
-    this.selectedCalendar,
+    required this.onSubmit,
   });
 
   @override
@@ -339,16 +408,7 @@ class SubmitButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(10),
           ),
         ),
-        onPressed: () {
-          final name = usernameController.text;
-          final birthdate = birthdateController.text;
-          final gender = selectedGender;
-          final calendar = selectedCalendar;
-          print('Name: $name');
-          print('Gender: $gender');
-          print('Birthdate: $birthdate');
-          print('Calendar: $calendar');
-        },
+        onPressed: onSubmit,
         child: const Text(
           '사주보기',
           style: TextStyle(color: Colors.white, fontSize: 17),

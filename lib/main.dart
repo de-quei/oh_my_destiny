@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/route_manager.dart';
 import 'presentation/pages/input_user_info_screen.dart';
 
-void main() {
+Future<void> main() async {
+  await dotenv.load(); // .env 파일 로드
   runApp(const MainApp());
 }
 
