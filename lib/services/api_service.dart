@@ -20,7 +20,7 @@ class ApiService {
           {
             'role': 'system',
             'content':
-                'You are an assistant that provides career fortune-telling. We will provide you with our name, our gender, our birthdate so you should provide our career fortune.'
+                'You are an assistant that provides career fortune-telling. We will provide you with my name, my gender, my birthday so you should provide our career fortune.'
           },
           {
             'role': 'user',
