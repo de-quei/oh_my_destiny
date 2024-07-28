@@ -17,6 +17,7 @@ class GptResponseScreen extends StatelessWidget {
         ),
         centerTitle: true,
         backgroundColor: primary,
+        automaticallyImplyLeading: false,
       ),
       body: SingleChildScrollView(
         child: Padding(
